@@ -1,4 +1,4 @@
-# Hijaby.github.io
+# Hijab
 
 Hijaby is a modern Jekyll-based website focused on **hijab fashion, modest style inspiration, and beautiful hijab gallery content**.
 Built for simplicity, speed, and scalability, this project is ideal for content creators who want to publish large amounts of visual fashion content.
