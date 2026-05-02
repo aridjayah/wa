@@ -207,36 +207,80 @@ modern women."
             {% endfor %}
 
             <div class="mt-5">
-                <!-- Pagination links -->
                 {% if paginator.total_pages > 1 %}
-                <ul class="pagination">
+                <ul class="pagination justify-content-center">
+
+                    <!-- PREV -->
                     {% if paginator.previous_page %}
-                    <li class="page-item"><a class="page-link"
-                            href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">&laquo;
-                            Prev</a></li>
-                    {% else %}
-                    <li class="page-item disabled"><span class="prev page-link">&laquo;</span></li>
+                    <li class="page-item">
+                        <a class="page-link" href="{{ paginator.previous_page_path | relative_url }}">
+                            &laquo;
+                        </a>
+                    </li>
                     {% endif %}
 
-                    {% for page in (1..paginator.total_pages) %}
+                    {% assign start = paginator.page | minus: 2 %}
+                    {% assign end = paginator.page | plus: 2 %}
+
+                    {% if start < 1 %}
+                    {% assign start = 1 %}
+                    {% endif %}
+
+                    {% if end > paginator.total_pages %}
+                    {% assign end = paginator.total_pages %}
+                    {% endif %}
+
+                    <!-- FIRST PAGE -->
+                    {% if start > 1 %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ '/' | relative_url }}">1</a>
+                    </li>
+                    {% if start > 2 %}
+                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                    {% endif %}
+                    {% endif %}
+
+                    <!-- MIDDLE PAGES -->
+                    {% for page in (start..end) %}
                     {% if page == paginator.page %}
-                    <li class="page-item disabled"><span class="webjeda page-link">{{ page }}</span></li>
+                    <li class="page-item active">
+                        <span class="page-link">{{ page }}</span>
+                    </li>
                     {% elsif page == 1 %}
-                    <li class="page-item"><a class="page-link" href="{{site.baseurl}}/">{{ page }}</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="{{ '/' | relative_url }}">{{ page }}</a>
+                    </li>
                     {% else %}
-                    <li class="page-item"><a class="page-link"
-                            href="{{ site.paginate_path | prepend: site.baseurl | replace: '//', '/' | replace: ':num', page }}">{{ page }}</a>
+                    <li class="page-item">
+                        <a class="page-link" href="{{ site.paginate_path | replace: ':num', page | relative_url }}">
+                            {{ page }}
+                        </a>
                     </li>
                     {% endif %}
                     {% endfor %}
 
-                    {% if paginator.next_page %}
-                    <li class="page-item"><a class="page-link"
-                            href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">Next
-                            &raquo;</a></li>
-                    {% else %}
-                    <li class="page-item disabled"><span class="next page-link">&raquo;</span></li>
+                    <!-- LAST PAGE -->
+                    {% if end < paginator.total_pages %}
+                    {% if end < paginator.total_pages | minus: 1 %}
+                    <li class="page-item disabled"><span class="page-link">...</span></li>
                     {% endif %}
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="{{ site.paginate_path | replace: ':num', paginator.total_pages | relative_url }}">
+                            {{ paginator.total_pages }}
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    <!-- NEXT -->
+                    {% if paginator.next_page %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ paginator.next_page_path | relative_url }}">
+                            &raquo;
+                        </a>
+                    </li>
+                    {% endif %}
+
                 </ul>
                 {% endif %}
             </div>
